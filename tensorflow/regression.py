@@ -106,4 +106,45 @@ def plot_horsepower(x, y):
   plt.legend()
   plt.show()
 
-plot_horsepower(x, y)
+#Linear regression with multiple inputs. vvv 
+linear_model = tf.keras.Sequential([
+   normalizer,
+   tf.keras.layers.Dense(units=1)
+])
+
+linear_model.predict(train_features[:10])
+
+print(linear_model.layers[1].kernel)
+
+linear_model.compile(
+   optimizer=tf.keras.optimizers.Adam(leanring_rate=0.1),
+   loss='mean_absolute_error'
+)
+
+history = linear_model.fit(
+   train_features,
+   train_labels,
+   epochs=100,
+   verbose=0,
+   validation_split=0.2)
+
+plot_loss(history)
+
+test_results['linear_model'] = linear_model.evaluate(
+   test_features, test_labels, verbose=0)
+#Linear regression with multiple inputs. ^^^
+
+#Regression with a deep nueral network. vvv
+def build_and_compile(norm):
+   model = tf.keras.Sequential([
+      norm,
+      tf.keras.layers.Dense(64, activation='relu'),
+      tf.keras.layers.Dense(64, activation='relu'),
+      tf.keras.layers.Dense(1)
+   ])
+
+   model.compile(loss='mean_absolute_error',
+                 optimizer=tf.keras.optimizers.Adam(0.001))
+   
+   return model
+
